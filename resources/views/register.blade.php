@@ -1,3 +1,4 @@
+{{-- Page: Register | Author: Jemarie Manggarai | ITP 212 Group 5 --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>

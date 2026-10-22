@@ -1,3 +1,4 @@
+{{-- Page: Welcome | Author: Jemarie Manggarai | ITP 212 Group 5 --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
