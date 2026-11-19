@@ -20,10 +20,11 @@ class RegisterController extends Controller
             'first_name' => 'required|string|max:255',
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
+            'email' => 'required|string|email:rfc|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Public registration always creates a Student. The Admin sets other roles.
         $studentRole = Role::where('name', 'Student')->first();
 
         User::create([
@@ -33,10 +34,11 @@ class RegisterController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role_id' => $studentRole->id,
-            'is_active' => true,
+            'is_active' => false,   // waits for Admin approval
             'is_admin' => false,
         ]);
 
-        return redirect()->route('login')->with('success', 'Registration successful! Please login.');
+        return redirect()->route('login')
+            ->with('success', 'Registration successful! Please wait for the Admin to approve your account.');
     }
 }

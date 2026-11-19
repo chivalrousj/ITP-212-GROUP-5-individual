@@ -191,18 +191,6 @@
                     <div class="error-message" id="emailError">{{ $errors->first('email') }}</div>
                 </div>
 
-                <!-- ROLE -->
-                <div class="form-group full-width">
-                    <label for="role">Role <span>*</span></label>
-                    <select id="role" name="role">
-                        <option value="">Select your role</option>
-                        <option value="Student" {{ old('role') == 'Student' ? 'selected' : '' }}>Student</option>
-                        <option value="Office" {{ old('role') == 'Office' ? 'selected' : '' }}>Office</option>
-                        <option value="Adviser" {{ old('role') == 'Adviser' ? 'selected' : '' }}>Adviser</option>
-                    </select>
-                    <div class="error-message" id="roleError"></div>
-                </div>
-
                 <!-- PASSWORD -->
                 <div class="form-group">
                     <label for="password">Password <span>*</span></label>
@@ -266,7 +254,6 @@
         const firstName = document.getElementById("firstName");
         const lastName = document.getElementById("lastName");
         const email = document.getElementById("email");
-        const role = document.getElementById("role");
 
         const password = document.getElementById("password");
         const confirmPassword = document.getElementById("confirmPassword");
@@ -378,14 +365,6 @@
                 valid = false;
             } else {
                 clearError(email, "emailError");
-            }
-
-            // ROLE
-            if (role.value === "") {
-                showError(role, "roleError", "Please select a role.");
-                valid = false;
-            } else {
-                clearError(role, "roleError");
             }
 
             // PASSWORD

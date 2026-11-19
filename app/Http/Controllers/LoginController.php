@@ -25,13 +25,13 @@ class LoginController extends Controller
             if (!$user->is_active) {
                 Auth::logout();
                 return back()->withErrors([
-                    'email' => 'Your account is inactive. Please contact the administrator.',
+                    'email' => 'Your account is inactive or awaiting Admin approval.',
                 ]);
             }
 
             $request->session()->regenerate();
 
-            return redirect()->intended('/main');
+            return redirect()->intended(route($user->dashboardRoute()));
         }
 
         return back()->withErrors([
