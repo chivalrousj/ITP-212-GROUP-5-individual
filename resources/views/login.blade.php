@@ -344,7 +344,12 @@
 
         </div>
 
-
+        @if (session('success'))
+            <div class="success-message" style="display: block;">
+                {{ session('success') }}
+            </div>
+        @endif
+        
         <!-- VALIDATION / AUTH ERROR -->
 
         @if ($errors->any())
@@ -433,6 +438,7 @@
                         type="checkbox"
                         id="rememberMe"
                         name="remember"
+                        value="1"
                     >
 
                     Remember Me

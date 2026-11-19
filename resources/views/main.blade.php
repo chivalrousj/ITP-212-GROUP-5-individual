@@ -203,7 +203,7 @@
             <a href="#">⚠️ Sanctions <span class="badge">3</span></a>
 
             <div class="menu-label">ACCOUNT</div>
-            <a href="#">⚙️ Settings</a>
+            <a href="{{ route('profile.edit') }}">⚙️ Settings</a>
             <a href="{{ route('logout') }}">🚪 Logout</a>
         </div>
 
