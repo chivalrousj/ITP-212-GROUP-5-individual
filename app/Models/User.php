@@ -44,6 +44,7 @@ class User extends Authenticatable
         'role_id',
         'is_active',
         'is_admin',
+        'photo',
     ];
 
     /**
