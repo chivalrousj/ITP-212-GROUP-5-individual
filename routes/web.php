@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\InstituteController as AdminInstituteController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Officer\StudentController as OfficerStudentController;
 use App\Http\Controllers\Officer\EventController as OfficerEventController;
+use App\Http\Controllers\Officer\SessionController as OfficerSessionController;
 use App\Http\Controllers\EventController;
 
 Route::get('/', fn() => view('landing-page'));
@@ -60,6 +61,9 @@ Route::middleware(['auth', 'role:Officer'])->prefix('officer')->name('officer.')
 
     // Officer event management (index and show are the shared routes above)
     Route::resource('events', OfficerEventController::class)->except(['index', 'show']);
+
+    // Open or close check-in and check-out of a manual session
+    Route::patch('sessions/{session}/toggle', [OfficerSessionController::class, 'toggle'])->name('sessions.toggle');
 });
 
 Route::middleware(['auth', 'role:Adviser'])->prefix('adviser')->name('adviser.')->group(function () {
