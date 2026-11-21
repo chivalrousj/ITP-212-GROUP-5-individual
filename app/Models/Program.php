@@ -14,4 +14,10 @@ class Program extends Model
         'code',
         'name',
     ];
+
+    // A program belongs to one institute
+    public function institute()
+    {
+        return $this->belongsTo(Institute::class);
+    }
 }

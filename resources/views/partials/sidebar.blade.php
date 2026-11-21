@@ -28,7 +28,8 @@
 
         {{-- Officer (manage-ssg) --}}
         @can('manage-ssg')
-            <a href="#">🎓 Register Students</a>
+            <a href="{{ route('officer.students.index') }}"
+               class="{{ request()->routeIs('officer.students.*') ? 'active' : '' }}">🎓 Register Students</a>
             <a href="#">📅 Events</a>
             <a href="#">✅ Attendance</a>
             <a href="#">⚠️ Sanctions <span class="badge">3</span></a>

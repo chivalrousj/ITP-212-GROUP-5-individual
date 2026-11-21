@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\InstituteController as AdminInstituteController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
+use App\Http\Controllers\Officer\StudentController as OfficerStudentController;
 
 Route::get('/', fn() => view('landing-page'));
 
@@ -45,6 +46,9 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
 
 Route::middleware(['auth', 'role:Officer'])->prefix('officer')->name('officer.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'officer'])->name('dashboard');
+
+    // Officer student management
+    Route::resource('students', OfficerStudentController::class)->except('show');
 });
 
 Route::middleware(['auth', 'role:Adviser'])->prefix('adviser')->name('adviser.')->group(function () {

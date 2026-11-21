@@ -16,4 +16,16 @@ class Student extends Model
         'sex',
         'year_level',
     ];
+
+    // A student belongs to one user account
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // A student belongs to one program
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
 }
