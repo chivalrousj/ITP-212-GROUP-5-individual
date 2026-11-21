@@ -7,6 +7,13 @@
 
 @include('admin.users._style')
 
+    @php $isStudent = auth()->user()->hasRole('Student'); @endphp
+
+    {{-- A Student account with no linked student record cannot check in --}}
+    @if ($isStudent && !$student)
+        <div class="flash flash-error">Your account has no student record yet. Please ask an Officer to register you.</div>
+    @endif
+
     <div class="page-bar">
         <a href="{{ route('events.index') }}" class="btn btn-light">&larr; Back to Events</a>
 
@@ -63,6 +70,9 @@
                         <th>SESSION</th>
                         <th>CHECK-IN</th>
                         <th>CHECK-OUT</th>
+                        @if ($isStudent)
+                            <th>MY ATTENDANCE</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -125,6 +135,36 @@
                                     @endif
                                 @endcan
                             </td>
+
+                            {{-- MY ATTENDANCE: only for Students. Shows my times and only the buttons that are open now. --}}
+                            @if ($isStudent)
+                                <td>
+                                    @php $mine = $myAttendances->get($session->id); @endphp
+
+                                    @if ($student)
+                                        <div style="font-size: 12px; margin-bottom: 6px;">
+                                            In: {{ $mine?->check_in_at ? $mine->check_in_at->format('M d, h:i A') : '-' }}<br>
+                                            Out: {{ $mine?->check_out_at ? $mine->check_out_at->format('M d, h:i A') : '-' }}
+                                        </div>
+
+                                        @if ($session->isCheckInOpen() && !$mine?->check_in_at)
+                                            <form method="POST" action="{{ route('student.attendance.check-in', $session) }}" style="display:inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-small">Check in</button>
+                                            </form>
+                                        @endif
+
+                                        @if ($session->isCheckOutOpen() && $mine?->check_in_at && !$mine?->check_out_at)
+                                            <form method="POST" action="{{ route('student.attendance.check-out', $session) }}" style="display:inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-small">Check out</button>
+                                            </form>
+                                        @endif
+                                    @else
+                                        No student record
+                                    @endif
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
