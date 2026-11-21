@@ -20,4 +20,10 @@ class Program extends Model
     {
         return $this->belongsTo(Institute::class);
     }
+
+    // A program has many students
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
 }

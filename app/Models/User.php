@@ -18,6 +18,18 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    // A user has one student profile
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    // A user has many announcements
+    public function announcements()
+    {
+        return $this->hasMany(Announcement::class);
+    }
+
     // True if the user's role name is one of the given names
     public function hasRole(string ...$names): bool
     {
@@ -35,7 +47,7 @@ class User extends Authenticatable
         };
     }
 
-        protected $fillable = [
+    protected $fillable = [
         'first_name',
         'middle_name',
         'last_name',

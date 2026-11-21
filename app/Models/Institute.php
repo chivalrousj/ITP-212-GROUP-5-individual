@@ -14,4 +14,16 @@ class Institute extends Model
         'code',
         'name',
     ];
+
+    // An institute has many programs
+    public function programs()
+    {
+        return $this->hasMany(Program::class);
+    }
+
+    // An institute has many students, through its programs
+    public function students()
+    {
+        return $this->hasManyThrough(Student::class, Program::class);
+    }
 }

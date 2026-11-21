@@ -24,4 +24,16 @@ class Attendance extends Model
         'check_in_at' => 'datetime',
         'check_out_at' => 'datetime',
     ];
+
+    // An attendance row belongs to one session (the foreign key is event_session_id)
+    public function session()
+    {
+        return $this->belongsTo(EventSession::class, 'event_session_id');
+    }
+
+    // An attendance row belongs to one student
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }

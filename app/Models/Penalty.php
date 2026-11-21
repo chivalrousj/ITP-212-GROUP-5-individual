@@ -22,4 +22,16 @@ class Penalty extends Model
     protected $casts = [
         'amount' => 'decimal:2',
     ];
+
+    // A penalty belongs to one event
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    // A penalty belongs to one student
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }
