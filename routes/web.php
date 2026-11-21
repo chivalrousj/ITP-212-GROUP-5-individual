@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Officer\StudentController as OfficerStudentController;
 use App\Http\Controllers\Officer\EventController as OfficerEventController;
 use App\Http\Controllers\Officer\SessionController as OfficerSessionController;
+use App\Http\Controllers\Student\AttendanceController as StudentAttendanceController;
 use App\Http\Controllers\EventController;
 
 Route::get('/', fn() => view('landing-page'));
@@ -72,4 +73,8 @@ Route::middleware(['auth', 'role:Adviser'])->prefix('adviser')->name('adviser.')
 
 Route::middleware(['auth', 'role:Student'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'student'])->name('dashboard');
+
+    // Student check-in and check-out (named student.attendance.check-in and student.attendance.check-out)
+    Route::post('sessions/{session}/check-in', [StudentAttendanceController::class, 'checkIn'])->name('attendance.check-in');
+    Route::post('sessions/{session}/check-out', [StudentAttendanceController::class, 'checkOut'])->name('attendance.check-out');
 });
