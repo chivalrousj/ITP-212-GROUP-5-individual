@@ -56,29 +56,80 @@
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>SESSION</th>
-                    <th>CHECK-IN</th>
-                    <th>CHECK-OUT</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($event->sessions as $session)
+        <div class="table-wrap">
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ ucfirst(str_replace('_', ' ', $session->period)) }}</td>
-                        @if ($event->availability === 'scheduled')
-                            <td>{{ substr($session->check_in_start, 0, 5) }} to {{ substr($session->check_in_end, 0, 5) }}</td>
-                            <td>{{ substr($session->check_out_start, 0, 5) }} to {{ substr($session->check_out_end, 0, 5) }}</td>
-                        @else
-                            <td>Opened by the Officer</td>
-                            <td>Opened by the Officer</td>
-                        @endif
+                        <th>SESSION</th>
+                        <th>CHECK-IN</th>
+                        <th>CHECK-OUT</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($event->sessions as $session)
+                        <tr>
+                            <td>{{ ucfirst(str_replace('_', ' ', $session->period)) }}</td>
+
+                            {{-- CHECK-IN: the window (or Manual), the status now, and Open/Close for Officers --}}
+                            <td>
+                                @if ($event->availability === 'scheduled')
+                                    {{ substr($session->check_in_start, 0, 5) }} to {{ substr($session->check_in_end, 0, 5) }}
+                                @else
+                                    Manual
+                                @endif
+
+                                @if ($session->isCheckInOpen())
+                                    <span class="status ok">Open</span>
+                                @else
+                                    <span class="status off">Closed</span>
+                                @endif
+
+                                @can('manage-ssg')
+                                    @if ($event->availability === 'manual')
+                                        <form method="POST" action="{{ route('officer.sessions.toggle', $session) }}" style="display:inline;">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="type" value="check_in">
+                                            <button type="submit" class="btn btn-small btn-light">
+                                                {{ $session->check_in_open ? 'Close' : 'Open' }}
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endcan
+                            </td>
+
+                            {{-- CHECK-OUT: same as check-in --}}
+                            <td>
+                                @if ($event->availability === 'scheduled')
+                                    {{ substr($session->check_out_start, 0, 5) }} to {{ substr($session->check_out_end, 0, 5) }}
+                                @else
+                                    Manual
+                                @endif
+
+                                @if ($session->isCheckOutOpen())
+                                    <span class="status ok">Open</span>
+                                @else
+                                    <span class="status off">Closed</span>
+                                @endif
+
+                                @can('manage-ssg')
+                                    @if ($event->availability === 'manual')
+                                        <form method="POST" action="{{ route('officer.sessions.toggle', $session) }}" style="display:inline;">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="type" value="check_out">
+                                            <button type="submit" class="btn btn-small btn-light">
+                                                {{ $session->check_out_open ? 'Close' : 'Open' }}
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endcan
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </section>
 
 @endsection

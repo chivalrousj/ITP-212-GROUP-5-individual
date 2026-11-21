@@ -24,6 +24,9 @@ class EventController extends Controller
             'sessions' => fn ($query) => $query->orderBy('id'),
         ]);
 
+        // Give each session its event, so isCheckInOpen() does not run a new query for every row
+        $event->sessions->each->setRelation('event', $event);
+
         return view('events.show', compact('event'));
     }
 }
