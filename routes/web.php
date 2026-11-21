@@ -14,6 +14,8 @@ use App\Http\Controllers\Officer\EventController as OfficerEventController;
 use App\Http\Controllers\Officer\SessionController as OfficerSessionController;
 use App\Http\Controllers\Student\AttendanceController as StudentAttendanceController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Officer\AttendanceController as OfficerAttendanceController;
 
 Route::get('/', fn() => view('landing-page'));
 
@@ -41,6 +43,11 @@ Route::middleware(['auth', 'role:Officer,Adviser,Student'])->group(function () {
     Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 });
 
+// Attendance records of an event: Officer and Adviser (the Adviser only views)
+Route::middleware(['auth', 'role:Officer,Adviser'])->group(function () {
+    Route::get('/events/{event}/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+});
+
 // One group per role: auth first, then role check
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
@@ -65,6 +72,11 @@ Route::middleware(['auth', 'role:Officer'])->prefix('officer')->name('officer.')
 
     // Open or close check-in and check-out of a manual session
     Route::patch('sessions/{session}/toggle', [OfficerSessionController::class, 'toggle'])->name('sessions.toggle');
+
+    // Officer attendance management (named officer.attendance.store, .update and .destroy)
+    Route::post('events/{event}/attendance', [OfficerAttendanceController::class, 'store'])->name('attendance.store');
+    Route::put('attendance/{attendance}', [OfficerAttendanceController::class, 'update'])->name('attendance.update');
+    Route::delete('attendance/{attendance}', [OfficerAttendanceController::class, 'destroy'])->name('attendance.destroy');
 });
 
 Route::middleware(['auth', 'role:Adviser'])->prefix('adviser')->name('adviser.')->group(function () {
