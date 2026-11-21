@@ -25,4 +25,28 @@ class Event extends Model
         'event_date' => 'date',
         'fine_per_miss' => 'decimal:2',
     ];
+
+    // An event has many sessions (morning and afternoon, or one half day)
+    public function sessions()
+    {
+        return $this->hasMany(EventSession::class);
+    }
+
+    // An event has many attendance rows, through its sessions
+    public function attendances()
+    {
+        return $this->hasManyThrough(Attendance::class, EventSession::class, 'event_id', 'event_session_id');
+    }
+
+    // An event has many penalties
+    public function penalties()
+    {
+        return $this->hasMany(Penalty::class);
+    }
+
+    // The user who created the event (the foreign key is created_by, not creator_id)
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

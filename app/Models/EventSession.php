@@ -25,4 +25,16 @@ class EventSession extends Model
         'check_in_open' => 'boolean',
         'check_out_open' => 'boolean',
     ];
+
+    // A session belongs to one event
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    // A session has many attendance rows
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'event_session_id');
+    }
 }

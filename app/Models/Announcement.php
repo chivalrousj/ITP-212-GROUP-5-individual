@@ -15,4 +15,10 @@ class Announcement extends Model
         'body',
         'attachment',
     ];
+
+    // An announcement belongs to the user who wrote it
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -28,4 +28,16 @@ class Student extends Model
     {
         return $this->belongsTo(Program::class);
     }
+
+    // A student has many attendance rows
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    // A student has many penalties
+    public function penalties()
+    {
+        return $this->hasMany(Penalty::class);
+    }
 }

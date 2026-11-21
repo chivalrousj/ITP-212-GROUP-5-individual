@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\InstituteController as AdminInstituteController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Officer\StudentController as OfficerStudentController;
+use App\Http\Controllers\Officer\EventController as OfficerEventController;
+use App\Http\Controllers\EventController;
 
 Route::get('/', fn() => view('landing-page'));
 
@@ -31,6 +33,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
+// Event list and event details: Officer, Adviser and Student
+Route::middleware(['auth', 'role:Officer,Adviser,Student'])->group(function () {
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+});
+
 // One group per role: auth first, then role check
 Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
@@ -49,6 +57,9 @@ Route::middleware(['auth', 'role:Officer'])->prefix('officer')->name('officer.')
 
     // Officer student management
     Route::resource('students', OfficerStudentController::class)->except('show');
+
+    // Officer event management (index and show are the shared routes above)
+    Route::resource('events', OfficerEventController::class)->except(['index', 'show']);
 });
 
 Route::middleware(['auth', 'role:Adviser'])->prefix('adviser')->name('adviser.')->group(function () {
