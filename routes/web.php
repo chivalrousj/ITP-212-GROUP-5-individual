@@ -7,6 +7,8 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\InstituteController as AdminInstituteController;
+use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 
 Route::get('/', fn() => view('landing-page'));
 
@@ -35,6 +37,10 @@ Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->grou
     // Admin user management (routes are named admin.users.*)
     Route::resource('users', AdminUserController::class)->except('show');
     Route::patch('users/{user}/toggle', [AdminUserController::class, 'toggle'])->name('users.toggle');
+
+    // Institutes and programs (Query Builder CRUD)
+    Route::resource('institutes', AdminInstituteController::class)->except('show');
+    Route::resource('programs', AdminProgramController::class)->except('show');
 });
 
 Route::middleware(['auth', 'role:Officer'])->prefix('officer')->name('officer.')->group(function () {
