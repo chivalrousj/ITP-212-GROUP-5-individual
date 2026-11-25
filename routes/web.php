@@ -15,6 +15,9 @@ use App\Http\Controllers\Officer\SessionController as OfficerSessionController;
 use App\Http\Controllers\Student\AttendanceController as StudentAttendanceController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\PenaltyController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Officer\PenaltyController as OfficerPenaltyController;
 use App\Http\Controllers\Officer\AttendanceController as OfficerAttendanceController;
 
 Route::get('/', fn() => view('landing-page'));
@@ -46,6 +49,11 @@ Route::middleware(['auth', 'role:Officer,Adviser,Student'])->group(function () {
 // Attendance records of an event: Officer and Adviser (the Adviser only views)
 Route::middleware(['auth', 'role:Officer,Adviser'])->group(function () {
     Route::get('/events/{event}/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+
+    // Fines of an event, and the reports (Officer and Adviser)
+    Route::get('/events/{event}/penalties', [PenaltyController::class, 'index'])->name('penalties.index');
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/{event}', [ReportController::class, 'show'])->name('reports.show');
 });
 
 // One group per role: auth first, then role check
@@ -77,6 +85,11 @@ Route::middleware(['auth', 'role:Officer'])->prefix('officer')->name('officer.')
     Route::post('events/{event}/attendance', [OfficerAttendanceController::class, 'store'])->name('attendance.store');
     Route::put('attendance/{attendance}', [OfficerAttendanceController::class, 'update'])->name('attendance.update');
     Route::delete('attendance/{attendance}', [OfficerAttendanceController::class, 'destroy'])->name('attendance.destroy');
+
+    // Officer fines (named officer.penalties.generate, .update and .destroy)
+    Route::post('events/{event}/penalties/generate', [OfficerPenaltyController::class, 'generate'])->name('penalties.generate');
+    Route::put('penalties/{penalty}', [OfficerPenaltyController::class, 'update'])->name('penalties.update');
+    Route::delete('penalties/{penalty}', [OfficerPenaltyController::class, 'destroy'])->name('penalties.destroy');
 });
 
 Route::middleware(['auth', 'role:Adviser'])->prefix('adviser')->name('adviser.')->group(function () {

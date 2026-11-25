@@ -32,30 +32,41 @@
                class="{{ request()->routeIs('officer.students.*') ? 'active' : '' }}">🎓 Register Students</a>
             <a href="{{ route('events.index') }}"
                class="{{ request()->routeIs('events.*', 'officer.events.*') ? 'active' : '' }}">📅 Events</a>
-            <a href="#">✅ Attendance</a>
-            <a href="#">⚠️ Sanctions <span class="badge">3</span></a>
-            <a href="#">📢 Announcements</a>
+            {{-- Attendance and Sanctions are per event, so these links open the event list first --}}
+            <a href="{{ route('events.index') }}">✅ Attendance</a>
+            <a href="{{ route('events.index') }}">⚠️ Sanctions</a>
+            @if (\Illuminate\Support\Facades\Route::has('announcements.index'))
+                <a href="{{ route('announcements.index') }}"
+                   class="{{ request()->routeIs('announcements.*') ? 'active' : '' }}">📢 Announcements</a>
+            @endif
         @endcan
 
         {{-- Adviser: view only --}}
         @if (auth()->user()->hasRole('Adviser'))
             <a href="{{ route('events.index') }}"
                class="{{ request()->routeIs('events.*', 'officer.events.*') ? 'active' : '' }}">📅 Events</a>
-            <a href="#">✅ Attendance</a>
-            <a href="#">⚠️ Sanctions</a>
+            <a href="{{ route('events.index') }}">✅ Attendance</a>
+            <a href="{{ route('events.index') }}">⚠️ Sanctions</a>
+            @if (\Illuminate\Support\Facades\Route::has('announcements.index'))
+                <a href="{{ route('announcements.index') }}"
+                   class="{{ request()->routeIs('announcements.*') ? 'active' : '' }}">📢 Announcements</a>
+            @endif
         @endif
 
         {{-- Officer and Adviser (view-reports) --}}
         @can('view-reports')
-            <a href="#">📈 Reports</a>
+            <a href="{{ route('reports.index') }}"
+               class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">📈 Reports</a>
         @endcan
 
         {{-- Student (use-attendance) --}}
         @can('use-attendance')
             <a href="{{ route('events.index') }}"
                class="{{ request()->routeIs('events.*', 'officer.events.*') ? 'active' : '' }}">📅 Events</a>
-            <a href="#">✅ Check-in / Check-out</a>
-            <a href="#">⚠️ My Sanctions</a>
+            @if (\Illuminate\Support\Facades\Route::has('announcements.index'))
+                <a href="{{ route('announcements.index') }}"
+                   class="{{ request()->routeIs('announcements.*') ? 'active' : '' }}">📢 Announcements</a>
+            @endif
         @endcan
 
         <div class="menu-label">ACCOUNT</div>

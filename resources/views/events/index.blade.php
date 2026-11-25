@@ -7,10 +7,26 @@
 
 @include('admin.users._style')
 
+    <style>.panel { width: 100%; }</style>
+
     @php $canSeeCounts = auth()->user()->hasRole('Officer', 'Adviser'); @endphp
 
     <div class="page-bar">
-        <div></div>
+
+        {{-- Upcoming and Past tabs, and a date search --}}
+        <div class="actions">
+            <a href="{{ route('events.index', ['tab' => 'upcoming']) }}" class="btn {{ $tab === 'upcoming' ? '' : 'btn-light' }}">Upcoming</a>
+            <a href="{{ route('events.index', ['tab' => 'past']) }}" class="btn {{ $tab === 'past' ? '' : 'btn-light' }}">Past</a>
+
+            <form method="GET" action="{{ route('events.index') }}" class="filters">
+                <input type="hidden" name="tab" value="{{ $tab }}">
+                <input type="date" name="date" value="{{ request('date') }}">
+                <button type="submit" class="btn btn-light">Search date</button>
+                @if (request('date'))
+                    <a href="{{ route('events.index', ['tab' => $tab]) }}" class="btn btn-light">Clear</a>
+                @endif
+            </form>
+        </div>
 
         {{-- Only Officers can add events --}}
         @if (auth()->user()->hasRole('Officer'))
@@ -67,7 +83,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ $canSeeCounts ? 7 : 6 }}">No events yet.</td>
+                            <td colspan="{{ $canSeeCounts ? 7 : 6 }}">No {{ $tab }} events found.</td>
                         </tr>
                     @endforelse
                 </tbody>

@@ -4,18 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\Event;
+use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    // Event list for Officer, Adviser and Student
-    public function index()
+    // Event list with Upcoming and Past tabs and a date search
+    public function index(Request $request)
     {
-        // withCount adds attendances_count without loading every attendance row
-        $events = Event::withCount('attendances')
-            ->orderByDesc('event_date')
-            ->paginate(10);
+        $tab = $request->input('tab') === 'past' ? 'past' : 'upcoming';
+        $today = now()->toDateString();
 
-        return view('events.index', compact('events'));
+        // withCount adds attendances_count without loading every attendance row
+        $query = Event::withCount('attendances');
+
+        if ($tab === 'past') {
+            $query->whereDate('event_date', '<', $today)->orderByDesc('event_date');
+        } else {
+            $query->whereDate('event_date', '>=', $today)->orderBy('event_date');
+        }
+
+        // optional search for one date
+        if ($date = $request->input('date')) {
+            $query->whereDate('event_date', $date);
+        }
+
+        $events = $query->paginate(10)->withQueryString();
+
+        return view('events.index', compact('events', 'tab'));
     }
 
     public function show(Event $event)

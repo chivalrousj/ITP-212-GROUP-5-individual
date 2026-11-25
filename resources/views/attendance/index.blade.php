@@ -8,6 +8,7 @@
 @include('admin.users._style')
 
     <style>
+        .panel { width: 100%; }
         .row-input { padding: 6px 8px; border: 1px solid #d5e3ed; border-radius: 6px; font-size: 12px; font-family: inherit; color: #17324d; background: white; }
         .add-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; align-items: end; }
         .add-grid label { display: block; margin-bottom: 4px; font-size: 12px; font-weight: bold; }

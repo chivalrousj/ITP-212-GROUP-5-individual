@@ -21,6 +21,8 @@
             {{-- Officers and Advisers can open the attendance records --}}
             @can('view-reports')
                 <a href="{{ route('attendance.index', $event) }}" class="btn btn-light">Attendance</a>
+                <a href="{{ route('penalties.index', $event) }}" class="btn btn-light">Fines</a>
+                <a href="{{ route('reports.show', $event) }}" class="btn btn-light">Report</a>
             @endcan
 
             @can('update', $event)
