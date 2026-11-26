@@ -81,7 +81,7 @@
     </div>
 
     <div class="sidebar-user">
-        <div class="avatar">{{ $initials }}</div>
+        @if (auth()->user()->photo)<img src="{{ asset('storage/' . auth()->user()->photo) }}" alt="Profile" class="avatar" style="object-fit:cover;">@else<div class="avatar">{{ $initials }}</div>@endif
         <div>
             <strong>{{ $fullName }}</strong>
             <small>{{ $role }}</small>

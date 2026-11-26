@@ -73,7 +73,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('profile.update') }}">
+            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -113,6 +113,17 @@
                 <div class="form-group">
                     <label for="password_confirmation">Confirm New Password</label>
                     <input type="password" id="password_confirmation" name="password_confirmation">
+                </div>
+
+                
+                <div class="form-group">
+                    <label for="photo">Profile Photo (optional)</label>
+                    @if ($user->photo)
+                        <img src="{{ asset('storage/' . $user->photo) }}" alt="Current photo"
+                             style="width:80px; height:80px; border-radius:50%; object-fit:cover; display:block; margin-bottom:10px;">
+                    @endif
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                    <p class="hint" style="margin-top:6px;">JPG, PNG or WEBP, up to 2 MB.</p>
                 </div>
 
                 <button type="submit" class="btn">Save Changes</button>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
@@ -32,6 +33,8 @@ class ProfileController extends Controller
             // Password change is optional, but it needs the current password
             'current_password' => 'nullable|required_with:password|current_password',
             'password' => 'nullable|string|min:8|confirmed',
+            // Profile photo is optional: an image up to 2 MB
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         // Set only these fields. role_id, is_active and is_admin are never touched.
@@ -42,6 +45,16 @@ class ProfileController extends Controller
 
         if (!empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
+        }
+
+        // New photo: delete the old file first, then save the new one on the public disk
+        if ($request->hasFile('photo')) {
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+
+            // only the path (such as avatars/abc.jpg) goes in the database
+            $user->photo = $request->file('photo')->store('avatars', 'public');
         }
 
         $user->save();
