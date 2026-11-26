@@ -8,6 +8,7 @@ use App\Models\Program;
 use App\Models\Role;
 use App\Models\Student;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -110,7 +111,7 @@ class StudentController extends Controller
             );
         });
 
-        return redirect()->route('officer.students.index')->with('success', 'Student registered.');
+        $this->clearStatsCache(); return redirect()->route('officer.students.index')->with('success', 'Student registered.');
     }
 
     public function edit(Student $student)
@@ -154,14 +155,25 @@ class StudentController extends Controller
             ]);
         });
 
-        return redirect()->route('officer.students.index')->with('success', 'Student updated.');
+        $this->clearStatsCache($student->user_id); return redirect()->route('officer.students.index')->with('success', 'Student updated.');
     }
 
     public function destroy(Student $student)
     {
         // Deleting the user also removes the student row, because of the cascade on user_id
-        $student->user->delete();
+        $this->clearStatsCache($student->user_id); $student->user->delete();
 
         return redirect()->route('officer.students.index')->with('success', 'Student deleted.');
+    }
+    
+    // A student change affects the dashboard counts
+    private function clearStatsCache(?int $userId = null): void
+    {
+        Cache::forget('officer.stats');
+        Cache::forget('admin.stats');
+
+        if ($userId) {
+            Cache::forget('student.stats.' . $userId);
+        }
     }
 }

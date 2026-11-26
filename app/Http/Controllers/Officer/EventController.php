@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Officer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -40,7 +42,7 @@ class EventController extends Controller
             }
         });
 
-        return redirect()->route('events.index')->with('success', 'Event created.');
+        $this->clearDashboardCache(); return redirect()->route('events.index')->with('success', 'Event created.');
     }
 
     public function edit(Event $event)
@@ -98,7 +100,7 @@ class EventController extends Controller
             }
         });
 
-        return redirect()->route('events.show', $event)->with('success', 'Event updated.');
+        $this->clearDashboardCache(); return redirect()->route('events.show', $event)->with('success', 'Event updated.');
     }
 
     public function destroy(Event $event)
@@ -108,7 +110,7 @@ class EventController extends Controller
 
         $event->delete();
 
-        return redirect()->route('events.index')->with('success', 'Event deleted.');
+        $this->clearDashboardCache(); return redirect()->route('events.index')->with('success', 'Event deleted.');
     }
 
     // Which session periods an event needs
@@ -170,5 +172,15 @@ class EventController extends Controller
         }
 
         return $request->validate($rules, [], $attributes);
+    }
+
+    // Event changes affect the dashboard counts, so the cached numbers must go
+    private function clearDashboardCache(): void
+    {
+        Cache::forget('officer.stats');
+        Cache::forget('adviser.stats');
+
+        // each student has their own cached numbers
+        User::whereHas('student')->pluck('id')->each(fn ($id) => Cache::forget('student.stats.' . $id));
     }
 }

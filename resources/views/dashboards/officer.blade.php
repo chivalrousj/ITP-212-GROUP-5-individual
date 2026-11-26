@@ -7,43 +7,39 @@
 @include('partials.weather')
 @include('partials.latest-announcements')
 
-            <!-- STAT CARDS (placeholder numbers for now) -->
+            <!-- STAT CARDS (real numbers) -->
             <section class="stats">
 
                 <div class="stat">
                     <div class="stat-top">
                         <div class="stat-icon">🎓</div>
-                        <span class="tag up">+12.4%</span>
                     </div>
-                    <h2>1,284</h2>
+                    <h2>{{ number_format($stats['students']) }}</h2>
                     <p>Total Students</p>
                 </div>
 
                 <div class="stat">
                     <div class="stat-top">
                         <div class="stat-icon">📅</div>
-                        <span class="tag up">+3</span>
                     </div>
-                    <h2>8</h2>
+                    <h2>{{ number_format($stats['upcoming']) }}</h2>
                     <p>Upcoming Events</p>
                 </div>
 
                 <div class="stat">
                     <div class="stat-top">
-                        <div class="stat-icon">✅</div>
-                        <span class="tag down">-2.1%</span>
+                        <div class="stat-icon">⚠️</div>
                     </div>
-                    <h2>92.6%</h2>
-                    <p>Attendance Rate</p>
+                    <h2>{{ number_format($stats['unpaid_fines']) }}</h2>
+                    <p>Unpaid Fines</p>
                 </div>
 
                 <div class="stat">
                     <div class="stat-top">
-                        <div class="stat-icon">⚠️</div>
-                        <span class="tag warn">3 new</span>
+                        <div class="stat-icon">📢</div>
                     </div>
-                    <h2>7</h2>
-                    <p>Pending Sanctions</p>
+                    <h2>{{ number_format($stats['announcements']) }}</h2>
+                    <p>Announcements</p>
                 </div>
 
             </section>

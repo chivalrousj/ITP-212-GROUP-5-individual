@@ -6,45 +6,61 @@
 @section('content')
 @include('partials.weather')
 
-            <!-- STAT CARDS (placeholder numbers for now) -->
+             <!-- STAT CARDS (real numbers) -->
             <section class="stats">
 
                 <div class="stat">
                     <div class="stat-top">
                         <div class="stat-icon">👥</div>
-                        <span class="tag up">+5</span>
                     </div>
-                    <h2>42</h2>
+                    <h2>{{ number_format($stats['total_users']) }}</h2>
                     <p>Total Users</p>
                 </div>
 
                 <div class="stat">
                     <div class="stat-top">
                         <div class="stat-icon">⏳</div>
-                        <span class="tag warn">2 new</span>
                     </div>
-                    <h2>3</h2>
+                    <h2>{{ number_format($stats['pending']) }}</h2>
                     <p>Awaiting Approval</p>
                 </div>
 
                 <div class="stat">
                     <div class="stat-top">
-                        <div class="stat-icon">🎓</div>
-                        <span class="tag up">+12</span>
+                        <div class="stat-icon">🏫</div>
                     </div>
-                    <h2>38</h2>
-                    <p>Students</p>
+                    <h2>{{ number_format($stats['institutes']) }}</h2>
+                    <p>Institutes</p>
                 </div>
 
                 <div class="stat">
                     <div class="stat-top">
-                        <div class="stat-icon">🧑</div>
-                        <span class="tag up">+1</span>
+                        <div class="stat-icon">📚</div>
                     </div>
-                    <h2>4</h2>
-                    <p>Officers &amp; Advisers</p>
+                    <h2>{{ number_format($stats['programs']) }}</h2>
+                    <p>Programs</p>
                 </div>
 
+            </section>
+
+            <section class="panel" style="margin-bottom: 18px;">
+                <div class="panel-head">
+                    <div>
+                        <h3>Users per Role</h3>
+                        <small>Number of accounts for each role</small>
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr><th>ROLE</th><th>USERS</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($stats['roles'] as $role => $total)
+                            <tr><td>{{ $role }}</td><td>{{ number_format($total) }}</td></tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </section>
 
             <section class="panel">

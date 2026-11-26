@@ -7,43 +7,23 @@
 @include('partials.weather')
 @include('partials.latest-announcements')
 
-            <!-- STAT CARDS (placeholder numbers for now) -->
+            <!-- STAT CARDS (real numbers) -->
             <section class="stats">
 
                 <div class="stat">
                     <div class="stat-top">
                         <div class="stat-icon">📅</div>
-                        <span class="tag up">+2</span>
                     </div>
-                    <h2>3</h2>
+                    <h2>{{ number_format($stats['upcoming']) }}</h2>
                     <p>Upcoming Events</p>
                 </div>
 
                 <div class="stat">
                     <div class="stat-top">
                         <div class="stat-icon">✅</div>
-                        <span class="tag up">+4%</span>
                     </div>
-                    <h2>95%</h2>
-                    <p>My Attendance</p>
-                </div>
-
-                <div class="stat">
-                    <div class="stat-top">
-                        <div class="stat-icon">⚠️</div>
-                        <span class="tag warn">1 new</span>
-                    </div>
-                    <h2>1</h2>
-                    <p>My Sanctions</p>
-                </div>
-
-                <div class="stat">
-                    <div class="stat-top">
-                        <div class="stat-icon">📢</div>
-                        <span class="tag up">New</span>
-                    </div>
-                    <h2>2</h2>
-                    <p>Announcements</p>
+                    <h2>{{ number_format($stats['attendance']) }}</h2>
+                    <p>My Attendance Records</p>
                 </div>
 
             </section>
