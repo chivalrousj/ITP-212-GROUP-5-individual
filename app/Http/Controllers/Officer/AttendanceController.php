@@ -8,6 +8,7 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Cache;
 
 class AttendanceController extends Controller
 {
@@ -42,6 +43,8 @@ class AttendanceController extends Controller
         }
 
         Attendance::create($validated);
+Cache::forget('adviser.stats');
+Cache::forget('student.stats.' . \App\Models\Student::find($validated['student_id'])?->user_id);
 
         return back()->with('success', 'Attendance record added.');
     }
@@ -66,6 +69,8 @@ class AttendanceController extends Controller
     {
         Gate::authorize('manage-ssg');
 
+        Cache::forget('adviser.stats');
+        Cache::forget('student.stats.' . $attendance->student?->user_id);
         $attendance->delete();
 
         return back()->with('success', 'Attendance record deleted.');

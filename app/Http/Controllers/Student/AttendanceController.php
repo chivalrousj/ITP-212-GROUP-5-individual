@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Student;
 
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\EventSession;
@@ -30,12 +31,14 @@ class AttendanceController extends Controller
             if ($attendance->check_in_at === null) {
                 $attendance->update(['check_in_at' => now()]);
 
+                Cache::forget('adviser.stats'); Cache::forget('student.stats.' . $request->user()->id);
                 return back()->with('success', 'Check-in recorded.');
             }
 
             return back()->with('error', 'You already checked in for this session.');
         }
 
+        Cache::forget('adviser.stats'); Cache::forget('student.stats.' . $request->user()->id);
         return back()->with('success', 'Check-in recorded.');
     }
 

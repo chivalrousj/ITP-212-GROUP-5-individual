@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Officer;
 
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Penalty;
@@ -47,6 +48,9 @@ class PenaltyController extends Controller
             );
         }
 
+        Cache::forget('officer.stats');
+        Cache::forget('adviser.stats');
+
         return back()->with('success', 'Fines generated for ' . $event->title . '.');
     }
 
@@ -63,6 +67,9 @@ class PenaltyController extends Controller
 
         $penalty->update($validated);
 
+        Cache::forget('officer.stats');
+        Cache::forget('adviser.stats');
+
         return back()->with('success', 'Penalty updated.');
     }
 
@@ -72,6 +79,9 @@ class PenaltyController extends Controller
 
         $penalty->delete();
 
+        Cache::forget('officer.stats');
+        Cache::forget('adviser.stats');
+        
         return back()->with('success', 'Penalty deleted.');
     }
 }
