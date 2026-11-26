@@ -4,6 +4,7 @@
 @section('subtitle', 'Welcome back, here is your overview')
 
 @section('content')
+@include('partials.weather')
 
             <!-- STAT CARDS (placeholder numbers for now) -->
             <section class="stats">

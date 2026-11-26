@@ -4,6 +4,7 @@
 @section('subtitle', 'Monitor attendance and sanctions')
 
 @section('content')
+@include('partials.weather')
 
             <!-- STAT CARDS (placeholder numbers for now) -->
             <section class="stats">

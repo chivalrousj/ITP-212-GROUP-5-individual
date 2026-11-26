@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'weather' => [
+        'url' => 'https://api.open-meteo.com/v1/forecast',
+        'latitude' => env('WEATHER_LAT'),
+        'longitude' => env('WEATHER_LON'),
+    ],
+
 ];

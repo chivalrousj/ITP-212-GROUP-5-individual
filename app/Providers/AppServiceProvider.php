@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\WeatherService;
+use Illuminate\Support\Facades\View;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +23,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Weather widget: the dashboards never call the API themselves
+        View::composer('partials.weather', function ($view) {
+            $service = app(WeatherService::class);
+            $weather = $service->current();
+
+            $view->with('weather', $weather)
+                 ->with('weatherLabel', $service->label(data_get($weather, 'weather_code')));
+        });
+
         // Gates: general "may this user do this?" rules, based on role
 
         // Only Officers manage the SSG system

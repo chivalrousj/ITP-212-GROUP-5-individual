@@ -4,6 +4,7 @@
 @section('subtitle', 'Manage accounts and the system')
 
 @section('content')
+@include('partials.weather')
 
             <!-- STAT CARDS (placeholder numbers for now) -->
             <section class="stats">

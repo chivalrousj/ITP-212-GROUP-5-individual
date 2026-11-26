@@ -4,6 +4,7 @@
 @section('subtitle', 'Your events and attendance')
 
 @section('content')
+@include('partials.weather')
 
             <!-- STAT CARDS (placeholder numbers for now) -->
             <section class="stats">
