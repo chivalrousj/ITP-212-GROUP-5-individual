@@ -56,7 +56,7 @@
             <tbody>
                 <tr><td><strong>Day type</strong></td><td>{{ $event->day_type === 'whole_day' ? 'Whole day' : 'Half day' }}</td></tr>
                 <tr><td><strong>Availability</strong></td><td>{{ ucfirst($event->availability) }}</td></tr>
-                <tr><td><strong>Fine per missed scan</strong></td><td>PHP {{ number_format($event->fine_per_miss, 2) }}</td></tr>
+                <tr><td><strong>Fine per missed scan</strong></td><td>&#8369;{{ number_format($event->fine_per_miss, 2) }}</td></tr>
                 <tr><td><strong>Created by</strong></td><td>{{ $event->creator ? $event->creator->first_name . ' ' . $event->creator->last_name : 'Deleted user' }}</td></tr>
             </tbody>
         </table>
