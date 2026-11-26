@@ -14,6 +14,20 @@ class AttendanceController extends Controller
     // Attendance records of one event, for Officer and Adviser
     public function index(Request $request, Event $event)
     {
+        // Clear Filters: forget the saved filters, then reload the page
+        if ($request->boolean('clear')) {
+            session()->forget(['filters.institute_id', 'filters.program_id']);
+
+            return redirect()->route('attendance.index', $event);
+        }
+
+        // Use the value from the request. If the request has none, use the one saved in the session
+        $instituteId = $request->has('institute_id') ? $request->input('institute_id') : session('filters.institute_id');
+        $programId = $request->has('program_id') ? $request->input('program_id') : session('filters.program_id');
+
+        // Save them, so the user returns to the same view
+        session(['filters.institute_id' => $instituteId, 'filters.program_id' => $programId]);
+
         $sessions = $event->sessions()->orderBy('id')->get();
 
         // with() loads the student, user, program and institute in a few queries, not one per row
@@ -24,11 +38,11 @@ class AttendanceController extends Controller
             $query->where('event_session_id', $sessionId);
         }
 
-        if ($instituteId = $request->input('institute')) {
+        if (filled($instituteId)) {
             $query->whereHas('student.program', fn ($q) => $q->where('institute_id', $instituteId));
         }
 
-        if ($programId = $request->input('program')) {
+        if (filled($programId)) {
             $query->whereHas('student', fn ($q) => $q->where('program_id', $programId));
         }
 
@@ -46,6 +60,6 @@ class AttendanceController extends Controller
             ? Student::with('user')->orderBy('student_no')->get()
             : collect();
 
-        return view('attendance.index', compact('event', 'sessions', 'attendances', 'institutes', 'programs', 'students'));
+        return view('attendance.index', compact('event', 'sessions', 'attendances', 'institutes', 'programs', 'students', 'instituteId', 'programId'));
     }
 }

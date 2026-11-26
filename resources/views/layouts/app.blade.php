@@ -225,14 +225,16 @@
 
         <div class="content">
 
-            {{-- Flash message area --}}
-            @if (session('success'))
-                <div class="flash flash-success">{{ session('success') }}</div>
-            @endif
-
-            @if (session('error'))
-                <div class="flash flash-error">{{ session('error') }}</div>
-            @endif
+            {{-- Flash message area (dismissible) --}}
+@foreach (['success' => 'flash-success', 'error' => 'flash-error'] as $key => $class)
+    @if (session($key))
+        <div class="flash {{ $class }}" style="display:flex; justify-content:space-between; align-items:center;">
+            <span>{{ session($key) }}</span>
+            <button type="button" onclick="this.parentElement.remove()"
+                    style="background:none; border:0; cursor:pointer; font-size:18px;" aria-label="Close">&times;</button>
+        </div>
+    @endif
+@endforeach
 
             @yield('content')
 

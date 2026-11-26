@@ -37,22 +37,23 @@
                 @endforeach
             </select>
 
-            <select name="institute" id="filter_institute">
+            <select name="institute_id" id="filter_institute">
                 <option value="">All institutes</option>
                 @foreach ($institutes as $institute)
-                    <option value="{{ $institute->id }}" {{ request('institute') == $institute->id ? 'selected' : '' }}>{{ $institute->code }}</option>
+                    <option value="{{ $institute->id }}" {{ (string) $instituteId === (string) $institute->id ? 'selected' : '' }}>{{ $institute->code }}</option>
                 @endforeach
             </select>
 
-            <select name="program" id="filter_program">
+            <select name="program_id" id="filter_program">
                 <option value="">All programs</option>
                 @foreach ($programs as $program)
                     <option value="{{ $program->id }}" data-institute="{{ $program->institute_id }}"
-                        {{ request('program') == $program->id ? 'selected' : '' }}>{{ $program->code }}</option>
+                        {{ (string) $programId === (string) $program->id ? 'selected' : '' }}>{{ $program->code }}</option>
                 @endforeach
             </select>
 
             <button type="submit" class="btn btn-light">Filter</button>
+            <a href="{{ route('attendance.index', [$event, 'clear' => 1]) }}" class="btn btn-light">Clear Filters</a>
         </form>
     </div>
 

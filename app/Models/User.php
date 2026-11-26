@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Str;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -78,4 +80,9 @@ class User extends Authenticatable
         'is_active' => 'boolean',
         'is_admin' => 'boolean',
     ];
+
+    public function getFullNameAttribute(): string
+{
+    return Str::of("{$this->first_name} {$this->middle_name} {$this->last_name}")->squish()->toString();
+}
 }
