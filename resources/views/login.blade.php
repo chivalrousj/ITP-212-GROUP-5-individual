@@ -445,13 +445,14 @@
 
                 </label>
 
-
+                {{--
                 <a
                     href="forgot-password.html"
                     class="forgot-link"
                 >
                     Forgot Password?
                 </a>
+                --}}
 
             </div>
 

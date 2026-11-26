@@ -70,7 +70,7 @@
                         <h3>Recent Registrations</h3>
                         <small>Latest account requests</small>
                     </div>
-                    <a href="#">View all</a>
+                    <a href="{{ route('admin.users.index') }}">View all</a>
                 </div>
 
                 <table>

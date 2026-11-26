@@ -197,10 +197,10 @@
         <div class="menu">
             <div class="menu-label">MAIN MENU</div>
             <a href="{{ route('main') }}" class="active">📊 Dashboard</a>
-            <a href="#">🎓 Register Students</a>
-            <a href="#">📅 Events</a>
-            <a href="#">✅ Attendance</a>
-            <a href="#">⚠️ Sanctions <span class="badge">3</span></a>
+            <a href="{{ route('events.index') }}">🎓 Register Students</a>
+            <a href="{{ route('events.index') }}">📅 Events</a>
+            <a href="{{ route('events.index') }}">✅ Attendance</a>
+            <a href="{{ route('events.index') }}">⚠️ Sanctions <span class="badge">3</span></a>
 
             <div class="menu-label">ACCOUNT</div>
             <a href="{{ route('profile.edit') }}">⚙️ Settings</a>
@@ -291,7 +291,7 @@
                         <h3>Recent Activity</h3>
                         <small>Latest registrations &amp; check-ins</small>
                     </div>
-                    <a href="#">View all</a>
+                    <a href="{{ route('events.index') }}">View all</a>
                 </div>
 
                 <table>

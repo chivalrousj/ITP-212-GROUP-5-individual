@@ -35,7 +35,7 @@
                         <h3>My Events</h3>
                         <small>Events you can attend</small>
                     </div>
-                    <a href="#">View all</a>
+                    <a href="{{ route('events.index') }}">View all</a>
                 </div>
 
                 <table>

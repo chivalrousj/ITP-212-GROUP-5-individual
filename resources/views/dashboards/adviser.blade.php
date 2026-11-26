@@ -43,7 +43,7 @@
                         <h3>Recent Activity</h3>
                         <small>Latest check-ins and sanctions</small>
                     </div>
-                    <a href="#">View all</a>
+                    <a href="{{ route('events.index') }}">View all</a>
                 </div>
 
                 <table>

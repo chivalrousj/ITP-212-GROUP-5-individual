@@ -51,7 +51,7 @@
                         <h3>Recent Activity</h3>
                         <small>Latest registrations &amp; check-ins</small>
                     </div>
-                    <a href="#">View all</a>
+                    <a href="{{ route('officer.students.index') }}">View all</a>
                 </div>
 
                 <table>
