@@ -17,15 +17,21 @@ class AttendanceController extends Controller
         Gate::authorize('manage-ssg');
 
         $validated = $request->validate([
-            // the session must belong to this event
-            'event_session_id' => ['required', Rule::exists('event_sessions', 'id')->where('event_id', $event->id)],
+            'event_session_id' => [
+                'required',
+                Rule::exists('event_sessions', 'id')
+                    ->where('event_id', $event->id),
+            ],
             'student_id' => 'required|exists:students,id',
-            'check_in_at' => 'required|date',
+            'check_in_at' => 'nullable|date|required_without:check_out_at',
             'check_out_at' => 'nullable|date|after_or_equal:check_in_at',
         ]);
 
-        // one row for each student in each session
-        $alreadyThere = Attendance::where('event_session_id', $validated['event_session_id'])
+        // Prevent duplicate records for the same student and session
+        $alreadyThere = Attendance::where(
+            'event_session_id',
+            $validated['event_session_id']
+        )
             ->where('student_id', $validated['student_id'])
             ->exists();
 
@@ -40,13 +46,13 @@ class AttendanceController extends Controller
         return back()->with('success', 'Attendance record added.');
     }
 
-    // Correct the times of a record
+    // Correct the times of an attendance record
     public function update(Request $request, Attendance $attendance)
     {
         Gate::authorize('manage-ssg');
 
         $validated = $request->validate([
-            'check_in_at' => 'required|date',
+            'check_in_at' => 'nullable|date|required_without:check_out_at',
             'check_out_at' => 'nullable|date|after_or_equal:check_in_at',
         ]);
 
@@ -55,6 +61,7 @@ class AttendanceController extends Controller
         return back()->with('success', 'Attendance record updated.');
     }
 
+    // Delete an attendance record
     public function destroy(Attendance $attendance)
     {
         Gate::authorize('manage-ssg');
