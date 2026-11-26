@@ -98,11 +98,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($fineSummary as $programCode => $summary)
+                    @forelse ($fineSummary as $row)
                         <tr>
-                            <td>{{ $programCode }}</td>
-                            <td>{{ $summary['students'] }}</td>
-                            <td>&#8369;{{ number_format($summary['total'], 2) }}</td>
+                            <td>{{ $row['program'] }}</td>
+                            <td>{{ $row['students'] }}</td>
+                            <td>&#8369;{{ number_format($row['total'], 2) }}</td>
                         </tr>
                     @empty
                         <tr>
@@ -112,7 +112,7 @@
 
                     <tr class="grand">
                         <td colspan="2">Grand total fines</td>
-                        <td>&#8369;{{ number_format($fineGrandTotal, 2) }}</td>
+                        <td>&#8369;{{ number_format($grandTotal, 2) }}</td>
                     </tr>
                 </tbody>
             </table>

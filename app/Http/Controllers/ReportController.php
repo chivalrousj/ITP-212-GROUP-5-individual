@@ -59,17 +59,25 @@ class ReportController extends Controller
             ->get()
             ->sortBy(fn ($penalty) => $penalty->student->student_no);
 
-        // Fine summary per program (a Support Collection: groupBy, map, sum)
-        $fineSummary = $penalties
+                // Step 1: load this event's fines together with each student's program
+        $finesWithProgram = $event->penalties()->with('student.program')->get();
+
+        // Step 2: put the fines in a collection and group them by the student's program code
+        $fineSummary = collect($finesWithProgram)
             ->groupBy(fn ($penalty) => $penalty->student->program->code)
-            ->map(fn ($group) => [
-                'students' => $group->count(),
-                'total' => $group->sum('amount'),
+            // Step 3: turn each group into one row: the program, how many students, and the total fines
+            ->map(fn ($group, $programCode) => [
+                'program'  => $programCode,
+                'students' => $group->pluck('student_id')->unique()->count(),
+                'total'    => $group->sum('amount'),
             ])
-            ->sortKeys();
+            // Step 4: biggest total first, then number the rows again from 0
+            ->sortByDesc('total')
+            ->values();
 
-        $fineGrandTotal = $penalties->sum('amount');
+        // Step 5: add all the program totals together
+        $grandTotal = $fineSummary->sum('total');
 
-        return view('reports.show', compact('event', 'byInstitute', 'grand', 'penalties', 'fineSummary', 'fineGrandTotal'));
+        return view('reports.show', compact('event', 'byInstitute', 'grand', 'penalties', 'fineSummary', 'grandTotal'));
     }
 }
