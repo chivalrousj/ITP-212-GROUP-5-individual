@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Announcement;
 use App\Services\WeatherService;
 use Illuminate\Support\Facades\View;
 use App\Models\User;
@@ -30,6 +31,11 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('weather', $weather)
                  ->with('weatherLabel', $service->label(data_get($weather, 'weather_code')));
+        });
+
+        // The three newest announcements for the Officer, Adviser and Student dashboards
+        View::composer('partials.latest-announcements', function ($view) {
+            $view->with('latestAnnouncements', Announcement::latest()->take(3)->get());
         });
 
         // Gates: general "may this user do this?" rules, based on role

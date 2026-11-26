@@ -19,6 +19,8 @@ use App\Http\Controllers\PenaltyController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Officer\PenaltyController as OfficerPenaltyController;
 use App\Http\Controllers\Officer\AttendanceController as OfficerAttendanceController;
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\Officer\AnnouncementController as OfficerAnnouncementController;
 
 Route::get('/', fn() => view('landing-page'));
 
@@ -44,6 +46,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:Officer,Adviser,Student'])->group(function () {
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+        Route::get('/announcements', [AnnouncementController::class, 'index'])->name('announcements.index');
+    Route::get('/announcements/{announcement}', [AnnouncementController::class, 'show'])->name('announcements.show');
 });
 
 // Attendance records of an event: Officer and Adviser (the Adviser only views)
@@ -90,6 +94,7 @@ Route::middleware(['auth', 'role:Officer'])->prefix('officer')->name('officer.')
     Route::post('events/{event}/penalties/generate', [OfficerPenaltyController::class, 'generate'])->name('penalties.generate');
     Route::put('penalties/{penalty}', [OfficerPenaltyController::class, 'update'])->name('penalties.update');
     Route::delete('penalties/{penalty}', [OfficerPenaltyController::class, 'destroy'])->name('penalties.destroy');
+    Route::resource('announcements', OfficerAnnouncementController::class)->except(['index', 'show']);
 });
 
 Route::middleware(['auth', 'role:Adviser'])->prefix('adviser')->name('adviser.')->group(function () {

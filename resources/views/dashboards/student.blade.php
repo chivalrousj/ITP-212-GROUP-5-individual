@@ -5,6 +5,7 @@
 
 @section('content')
 @include('partials.weather')
+@include('partials.latest-announcements')
 
             <!-- STAT CARDS (placeholder numbers for now) -->
             <section class="stats">
