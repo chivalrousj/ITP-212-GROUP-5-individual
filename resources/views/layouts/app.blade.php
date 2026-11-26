@@ -194,7 +194,7 @@
 @php
     // Logged-in user's details, shared with the sidebar below
     $user = auth()->user();
-    $fullName = $user->first_name . ' ' . $user->last_name;
+   $fullName = $user->full_name;
     $initials = strtoupper(substr($user->first_name, 0, 1) . substr($user->last_name, 0, 1));
     $role = $user->role->name ?? 'Student';
 @endphp

@@ -32,7 +32,7 @@
                 <option value="">All sessions</option>
                 @foreach ($sessions as $session)
                     <option value="{{ $session->id }}" {{ request('session') == $session->id ? 'selected' : '' }}>
-                        {{ ucfirst(str_replace('_', ' ', $session->period)) }}
+                        {{ Str::headline($session->period) }}
                     </option>
                 @endforeach
             </select>
@@ -75,7 +75,7 @@
                     <select id="event_session_id" name="event_session_id">
                         @foreach ($sessions as $session)
                             <option value="{{ $session->id }}" {{ old('event_session_id') == $session->id ? 'selected' : '' }}>
-                                {{ ucfirst(str_replace('_', ' ', $session->period)) }}
+                                {{ Str::headline($session->period) }}
                             </option>
                         @endforeach
                     </select>
@@ -87,7 +87,7 @@
                         <option value="">Select a student</option>
                         @foreach ($students as $student)
                             <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
-                                {{ $student->student_no }} - {{ $student->user->first_name }} {{ $student->user->last_name }}
+                                {{ $student->student_no }} - {{ $student->user->full_name }}
                             </option>
                         @endforeach
                     </select>
@@ -131,10 +131,10 @@
                     @forelse ($attendances as $attendance)
                         <tr>
                             <td>{{ $attendance->student->student_no }}</td>
-                            <td>{{ $attendance->student->user->first_name }} {{ $attendance->student->user->last_name }}</td>
+                            <td>{{ $attendance->student->user->full_name }}</td>
                             <td>{{ $attendance->student->program->code }}</td>
                             <td>{{ $attendance->student->program->institute->code }}</td>
-                            <td>{{ ucfirst(str_replace('_', ' ', $attendance->session->period)) }}</td>
+                            <td>{{ Str::headline($attendance->session->period) }}</td>
 
                             @can('manage-ssg')
                                 {{-- Officers edit the times in the row. The inputs belong to the Save form below (form="...") --}}

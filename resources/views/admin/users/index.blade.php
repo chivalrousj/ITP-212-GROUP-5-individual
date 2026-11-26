@@ -41,7 +41,7 @@
                 <tbody>
                     @forelse ($users as $u)
                         <tr>
-                            <td>{{ $u->first_name }} {{ $u->last_name }}</td>
+                            <td>{{ $u->full_name }}</td>
                             <td>{{ $u->email }}</td>
                             <td>{{ $u->role->name ?? 'None' }}</td>
                             <td>

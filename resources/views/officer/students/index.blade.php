@@ -51,7 +51,7 @@
                     @forelse ($students as $student)
                         <tr>
                             <td>{{ $student->student_no }}</td>
-                            <td>{{ $student->user->first_name }} {{ $student->user->last_name }}</td>
+                            <td>{{ $student->user->full_name }}</td>
                             <td>{{ $student->program->code }}</td>
                             <td>{{ $student->program->institute->code }}</td>
                             <td>{{ $student->year_level }}</td>

@@ -56,8 +56,8 @@
                             <td>{{ $event->title }}</td>
                             <td>{{ $event->event_date->format('M d, Y') }}</td>
                             <td>{{ $event->venue }}</td>
-                            <td>{{ $event->day_type === 'whole_day' ? 'Whole day' : 'Half day' }}</td>
-                            <td>{{ ucfirst($event->availability) }}</td>
+                            <td>{{ Str::headline($event->day_type) }}</td>
+                            <td>{{ Str::headline($event->availability) }}</td>
                             @if ($canSeeCounts)
                                 <td>{{ $event->attendances_count }}</td>
                             @endif

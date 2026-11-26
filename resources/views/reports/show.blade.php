@@ -139,7 +139,7 @@
                     @forelse ($penalties as $penalty)
                         <tr>
                             <td>{{ $penalty->student->student_no }}</td>
-                            <td>{{ $penalty->student->user->first_name }} {{ $penalty->student->user->last_name }}</td>
+                            <td>{{ $penalty->student->user->full_name }}</td>
                             <td>{{ $penalty->student->program->code }}</td>
                             <td>{{ $penalty->missed_scans }}</td>
                             <td>&#8369;{{ number_format($penalty->amount, 2) }}</td>

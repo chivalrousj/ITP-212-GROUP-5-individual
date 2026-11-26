@@ -54,10 +54,10 @@
 
         <table>
             <tbody>
-                <tr><td><strong>Day type</strong></td><td>{{ $event->day_type === 'whole_day' ? 'Whole day' : 'Half day' }}</td></tr>
-                <tr><td><strong>Availability</strong></td><td>{{ ucfirst($event->availability) }}</td></tr>
+                <tr><td><strong>Day type</strong></td><td>{{ Str::headline($event->day_type) }}</td></tr>
+                <tr><td><strong>Availability</strong></td><td>{{ Str::headline($event->availability) }}</td></tr>
                 <tr><td><strong>Fine per missed scan</strong></td><td>&#8369;{{ number_format($event->fine_per_miss, 2) }}</td></tr>
-                <tr><td><strong>Created by</strong></td><td>{{ $event->creator ? $event->creator->first_name . ' ' . $event->creator->last_name : 'Deleted user' }}</td></tr>
+                <tr><td><strong>Created by</strong></td><td>{{ $event->creator?->full_name ?? 'Deleted user' }}</td></tr>
             </tbody>
         </table>
     </section>
@@ -85,7 +85,7 @@
                 <tbody>
                     @foreach ($event->sessions as $session)
                         <tr>
-                            <td>{{ ucfirst(str_replace('_', ' ', $session->period)) }}</td>
+                            <td>{{ Str::headline($session->period) }}</td>
 
                             {{-- CHECK-IN: the window (or Manual), the status now, and Open/Close for Officers --}}
                             <td>
